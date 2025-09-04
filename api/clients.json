@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "name": "Saleemi Home Plus",
+      "industry": "Retail",
+      "city": "Faisalabad"
+    },
+    {
+      "name": "SSA Consultancy",
+      "industry": "IT Services",
+      "city": ""
+    },
+    {
+      "name": "Fresh Meat Shop",
+      "industry": "E-commerce",
+      "city": ""
+    },
+    {
+      "name": "Local Distributors",
+      "industry": "Wholesale",
+      "city": ""
+    }
+  ]
+}

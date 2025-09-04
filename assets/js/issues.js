@@ -1,4 +1,17 @@
 
+async function fetchWithFallback(primary, fallback) {
+  try {
+    const r = await fetch(primary, {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch (e) {
+    if (!fallback) throw e;
+    const r2 = await fetch(fallback, {cache:'no-store'});
+    return await r2.json();
+  }
+}
+
+
 async function fetchJSON(u){ const r=await fetch(u); if(!r.ok) throw new Error('Fetch failed'); return await r.json(); }
 function esc(s){ return (s??'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function pill(st){ const cls = st==='Open'?'pill red':(st==='Fixed'?'pill green':'pill amber'); return `<span class="${cls}">${esc(st||'Open')}</span>`; }

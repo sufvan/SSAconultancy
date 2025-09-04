@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "title": "Windows 7 RDP sessions",
+      "status": "Open",
+      "content": "Use Windows Server or proper licensing."
+    },
+    {
+      "title": "SQL 2000 restore exclusive access",
+      "status": "Open",
+      "content": "Ensure no other connections exist before restore."
+    }
+  ]
+}

@@ -1,4 +1,17 @@
 
+async function fetchWithFallback(primary, fallback) {
+  try {
+    const r = await fetch(primary, {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch (e) {
+    if (!fallback) throw e;
+    const r2 = await fetch(fallback, {cache:'no-store'});
+    return await r2.json();
+  }
+}
+
+
 (async function(){
   try{
     const r = await fetch('/api/software.json', {cache:'no-store'});

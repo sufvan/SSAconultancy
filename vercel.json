@@ -1,0 +1,24 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+
+  "rewrites": [
+    { "source": "/products",      "destination": "/products.html" },
+    { "source": "/download",      "destination": "/download.html" },
+    { "source": "/pricing",       "destination": "/pricing.html" },
+    { "source": "/release-notes", "destination": "/releases.html" },
+    { "source": "/our-clients",   "destination": "/clients.html" },
+    { "source": "/known-issues",  "destination": "/known-issues.html" },
+    { "source": "/about",         "destination": "/about.html" },
+    { "source": "/contact-us",    "destination": "/contact.html" }
+  ]
+}

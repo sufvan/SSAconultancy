@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Our Clients • SSA Consultancy</title>
+<link rel="icon" href="assets/img/logo.png" type="image/png"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css"/>
+  <script defer src="/assets/js/preloader.js"></script>
+  <script defer src="/assets/js/nav.js"></script>
+</head>
+<body>
+<header class="header">
+ <div class="container nav">
+ <a class="brand" href="index.html"><img src="assets/img/logo.png" alt="logo"/><span>SSA Consultancy</span></a>
+ <label for="nav-toggle" class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></label>
+ <input type="checkbox" id="nav-toggle" hidden/>
+ <nav class="nav-links"></nav>
+ </div>
+</header>
+
+<section class="banner"><div class="container">
+ <div class="titlebar"><img src="assets/img/logo.png"/><h1>Our Clients</h1>
+ <p class="muted">Brands and businesses who trust SSA Consultancy.</p></div>  
+ <div class="container"><img class="banner-art" src="assets/img/home-hero.svg" alt="clients"/></div></div></section>
+<section class="section"><div class="container grid grid-4" id="clients-grid"></div></section>
+
+<footer class="footer">
+ <div class="container">
+ <div class="hr"></div>
+ <div class="small muted">© 2025 SSA Consultancy. All rights reserved.</div>
+ </div>
+</footer>
+<script>
+(function(){function hide(){var el=document.getElementById('preloader'); if(el){el.classList.add('hidden');}} window.addEventListener('load', hide); setTimeout(hide,3000);})();
+</script>
+<script src="assets/js/pay.js"></script>
+<script src="assets/js/catalog.js"></script>
+</body></html
+<section class="section">
+  <div class="container">
+    <div id="clients-grid">
+      <!-- populated by clients.js -->
+    </div>
+  </div>
+</section>
+<script src="/assets/js/clients.js"></script>
+
+<html lang="en"><head>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css"/>
+  <script defer src="/assets/js/preloader.js"></script>
+  <script defer src="/assets/js/nav.js"></script>
+</head>
+<body>
+
+
+
+<script>
+(function(){function hide(){var el=document.getElementById('preloader'); if(el){el.classList.add('hidden');}} window.addEventListener('load', hide); setTimeout(hide,3000);})();
+</script>
+<script src="assets/js/pay.js"></script>
+<script src="assets/js/catalog.js"></script>
+</body></html>
+
+<script>
+(async function(){
+  const grid = document.getElementById('clients-grid');
+  if(!grid) return;
+  grid.innerHTML = '<div class="muted">Loading…</div>';
+  try{
+    const res = await fetch('/api/clients.json');
+    const data = await res.json();
+    if(!Array.isArray(data) || !data.length){
+      grid.innerHTML = '<div class="muted">No clients to show yet.</div>';
+      return;
+    }
+    grid.innerHTML = data.map(c => `
+      <div class="card center">
+        ${c.logo_url ? `<img src="${c.logo_url}" alt="${c.name}" style="max-height:64px;object-fit:contain;margin-bottom:10px;">` : ''}
+        <h3>${c.name}</h3>
+        <div class="small muted">${[c.industry,c.city].filter(Boolean).join(' • ')}</div>
+      </div>`).join('');
+  }catch(e){
+    grid.innerHTML = '<div class="muted">Failed to load clients.</div>';
+  }
+})();
+</script>

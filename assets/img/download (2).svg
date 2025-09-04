@@ -1,0 +1,16 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    :root{ --ink:#0A2A43; --accent:#1DB5A5; }
+    .title,.tag{ fill:var(--ink); }
+    .leaf{ fill:var(--accent); transform-origin:410px 360px;
+           animation: breathe 2.8s ease-in-out infinite; }
+    @keyframes breathe{
+      0%,100%{ transform:scale(.92) rotate(-2deg) } 50%{ transform:scale(1.03) rotate(0deg) }
+    }
+    @media (prefers-reduced-motion:reduce){ .leaf{ animation:none } }
+  </style>
+
+  <path class="leaf" d="M410 360c30-55 85-70 85-70c-18 62-48 108-85 140c-37-32-67-78-85-140c0 0 55 15 85 70z"></path>
+  <text class="title" x="400" y="340" text-anchor="middle" font-size="150" font-family="Times New Roman, Georgia, serif">SSA</text>
+  <text class="tag" x="400" y="430" text-anchor="middle" font-size="46" letter-spacing="6" font-family="Poppins, Segoe UI, Helvetica Neue, Arial, sans-serif">CONSULTANCY</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="HR & Attendance">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#6c63ff"/>
+      <stop offset="1" stop-color="#08d1d8"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" x2="1"><stop offset="0" stop-color="#11162a"/><stop offset="1" stop-color="#1b2140"/></linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="#0b1020"/>
+  <circle cx="150" cy="120" r="180" fill="url(#bg)" opacity="0.25"/>
+  <circle cx="1050" cy="40" r="220" fill="url(#bg)" opacity="0.18"/>
+  <!-- Window frame -->
+  <rect x="80" y="80" rx="14" width="1040" height="590" fill="url(#chrome)" stroke="rgba(255,255,255,.15)"/>
+  <rect x="80" y="80" rx="14" width="1040" height="46" fill="rgba(255,255,255,.06)"/>
+  <circle cx="108" cy="103" r="6" fill="#f87171"/>
+  <circle cx="128" cy="103" r="6" fill="#fbbf24"/>
+  <circle cx="148" cy="103" r="6" fill="#34d399"/>
+  <!-- Sidebar -->
+  <rect x="110" y="150" width="200" height="490" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)"/>
+  <rect x="130" y="170" width="160" height="16" rx="8" fill="rgba(255,255,255,.2)"/>
+  <rect x="130" y="200" width="120" height="12" rx="6" fill="rgba(255,255,255,.15)"/>
+  <rect x="130" y="222" width="140" height="12" rx="6" fill="rgba(255,255,255,.1)"/>
+  <rect x="130" y="244" width="110" height="12" rx="6" fill="rgba(255,255,255,.1)"/>
+  <rect x="130" y="266" width="150" height="12" rx="6" fill="rgba(255,255,255,.1)"/>
+  <!-- Main grid -->
+  <rect x="340" y="150" width="750" height="490" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/>
+  <!-- Table header -->
+  <rect x="360" y="170" width="710" height="24" rx="6" fill="rgba(255,255,255,.06)"/>
+  <!-- Rows -->
+  <rect x="360" y="200" width="710" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="236" width="650" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="272" width="590" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="308" width="710" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="344" width="650" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="380" width="590" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="416" width="710" height="22" rx="6" fill="rgba(255,255,255,.05)"/><rect x="360" y="452" width="650" height="22" rx="6" fill="rgba(255,255,255,.05)"/>
+  <text x="100" y="720" fill="#e8ecf4" font-family="Inter, Arial" font-weight="800" font-size="34">HR & Attendance</text>
+  <text x="100" y="748" fill="#9aa3b2" font-family="Inter, Arial" font-size="18">SSA Consultancy</text>
+</svg>

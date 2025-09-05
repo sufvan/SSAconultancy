@@ -20,6 +20,6 @@
     { "source": "/known-issues",  "destination": "/known-issues.html" },
     { "source": "/about",         "destination": "/about.html" },
     { "source": "/contact-us",    "destination": "/contact.html" },
-	{ "source": "/ads.txt", "destination": "/assets/Ads.txt", "permanent": true }
+	{ "source": "/ads.txt", "destination": "/assets/Ads.txt" }
   ]
 }

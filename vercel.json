@@ -1,16 +1,24 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-
   "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
+    },
+    {
+      "source": "/ads.txt",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
     }
   ],
-
+  "redirects": [
+    { "source": "/Ads.txt", "destination": "/ads.txt", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/products",      "destination": "/products.html" },
     { "source": "/download",      "destination": "/download.html" },
@@ -19,7 +27,6 @@
     { "source": "/our-clients",   "destination": "/clients.html" },
     { "source": "/known-issues",  "destination": "/known-issues.html" },
     { "source": "/about",         "destination": "/about.html" },
-    { "source": "/contact-us",    "destination": "/contact.html" },
-	{ "source": "/ads.txt", "destination": "/assets/Ads.txt" }
+    { "source": "/contact-us",    "destination": "/contact.html" }
   ]
 }

@@ -1,5 +1,6 @@
 
 import os, re, datetime
+import shutil
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, UploadFile, File
@@ -12,32 +13,32 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 # --- Paths & Config ---
 BASE_DIR = Path(__file__).parent
+SITE_DIR = BASE_DIR  # aapke current code ke mutabiq root hi site dir hai
 
-def _resolve_site_dir() -> Path:
-    env = os.environ.get("SITE_DIR")
-    if env and Path(env).is_dir():
-        return Path(env)
-    # site/ folder preference
-    if (BASE_DIR / ".").is_dir():
-        return BASE_DIR / "."
-    return BASE_DIR  # fallback
+SEED_DB = SITE_DIR / "assets" / "data" / "app.db"       # repo ke andar wali seed
+RUNTIME_DB = Path("/tmp/app.db")                        # Vercel par writable
 
-SITE_DIR = _resolve_site_dir()
+# Vercel/Server detect (simple): agar /tmp writable hai to runtime DB use karo
+use_runtime = os.access("/tmp", os.W_OK)
 
-# DB/Uploads dirs — ensure they exist
-DB_DIR = SITE_DIR / "assets" / "data"
-DB_DIR.mkdir(parents=True, exist_ok=True)
-UPLOAD_DIR = SITE_DIR / "assets" / "uploads"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+if use_runtime:
+    # first boot par /tmp/app.db na ho to seed copy kar do
+    if SEED_DB.exists() and not RUNTIME_DB.exists():
+        RUNTIME_DB.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(SEED_DB, RUNTIME_DB)
+    DB_PATH = RUNTIME_DB
+else:
+    # local dev ya normal server
+    DB_DIR = SITE_DIR / "assets" / "data"
+    DB_DIR.mkdir(parents=True, exist_ok=True)
+    DB_PATH = DB_DIR / "app.db"
 
-DB_PATH = DB_DIR / "app.db"
-
-SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
-ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 print("== SITE_DIR:", SITE_DIR)
 print("== DB_PATH :", DB_PATH)
 # --- App & DB ---
+SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
+ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))

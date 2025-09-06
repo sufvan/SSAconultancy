@@ -2,34 +2,21 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-
   "builds": [
     {
       "src": "app.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": [
-          "templates/**",
-          "assets/data/**"
-        ]
+        "includeFiles": ["templates/**", "assets/data/**"]
       }
     },
     { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "*.html",  "use": "@vercel/static" }
+    { "src": "*.html", "use": "@vercel/static" }
   ],
-
   "routes": [
     { "src": "/api/(.*)",  "dest": "app.py" },
     { "src": "/admin(.*)", "dest": "app.py" },
     { "src": "/(favicon\\.ico|robots\\.txt|ads\\.txt)", "dest": "/$1" },
-    { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/assets/$1" },
-    { "src": "/products",      "dest": "/products.html" },
-    { "src": "/download",      "dest": "/download.html" },
-    { "src": "/pricing",       "dest": "/pricing.html" },
-    { "src": "/release-notes", "dest": "/releases.html" },
-    { "src": "/our-clients",   "dest": "/clients.html" },
-    { "src": "/known-issues",  "dest": "/known-issues.html" },
-    { "src": "/about",         "dest": "/about.html" },
-    { "src": "/contact-us",    "dest": "/contact.html" }
+    { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/assets/$1" }
   ]
 }

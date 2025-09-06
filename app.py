@@ -33,8 +33,8 @@ else:
     DB_DIR.mkdir(parents=True, exist_ok=True)
     DB_PATH = DB_DIR / "app.db"
 
-print("== SITE_DIR:", SITE_DIR)
-print("== DB_PATH :", DB_PATH)
+# print("== SITE_DIR:", SITE_DIR)
+# print("== DB_PATH :", DB_PATH)
 # --- App & DB ---
 SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
@@ -581,12 +581,13 @@ if __name__ == "__main__":
     uvicorn.run("app:app", host="127.0.0.1", port=int(os.environ.get("PORT", "8000")), reload=True)
 
 # Seed Known Issues (only if empty)
-with engine.connect() as conn:
-    try:
-        c = conn.exec_driver_sql("SELECT COUNT(*) FROM known_issues").fetchone()[0]
-        if not c:
-            conn.exec_driver_sql("INSERT INTO known_issues (title,status,content,sort_order,is_active,created_at,updated_at) VALUES "
-                                 "('Windows 7 RDP sessions','Open','Use Windows Server or proper licensing.',0,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),"
-                                 "('SQL 2000 restore exclusive access','Open','Close all connections and set SINGLE_USER before restore.',1,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)")
-    except Exception as _e:
-        pass
+# with engine.connect() as conn:
+#     try:
+#         c = conn.exec_driver_sql("SELECT COUNT(*) FROM known_issues").fetchone()[0]
+#         if not c:
+#             conn.exec_driver_sql("INSERT INTO known_issues (title,status,content,sort_order,is_active,created_at,updated_at) VALUES "
+#                                  "('Windows 7 RDP sessions','Open','Use Windows Server or proper licensing.',0,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),"
+#                                  "('SQL 2000 restore exclusive access','Open','Close all connections and set SINGLE_USER before restore.',1,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)")
+#     except Exception as _e:
+#         pass
+

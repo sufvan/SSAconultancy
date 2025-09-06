@@ -2,6 +2,7 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+
   "builds": [
     {
       "src": "app.py",
@@ -13,6 +14,7 @@
     { "src": "assets/**", "use": "@vercel/static" },
     { "src": "*.html", "use": "@vercel/static" }
   ],
+
   "routes": [
     { "src": "/api/(.*)",  "dest": "app.py" },
     { "src": "/admin(.*)", "dest": "app.py" },

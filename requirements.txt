@@ -1,6 +1,5 @@
 fastapi
-uvicorn
-jinja2
+uvicorn[standard]
 sqlalchemy
+jinja2
 python-multipart
-itsdangerous

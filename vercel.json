@@ -21,9 +21,8 @@
   "routes": [
     { "src": "/api/(.*)",  "dest": "app.py" },
     { "src": "/admin(.*)", "dest": "app.py" },
-
+    { "src": "/(favicon\\.ico|robots\\.txt|ads\\.txt)", "dest": "/$1" },
     { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/assets/$1" },
-
     { "src": "/products",      "dest": "/products.html" },
     { "src": "/download",      "dest": "/download.html" },
     { "src": "/pricing",       "dest": "/pricing.html" },

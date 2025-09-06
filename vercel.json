@@ -28,7 +28,4 @@
     { "src": "/(.*)", "dest": "app.py" }
   ],
 
-  "redirects": [
-    { "source": "/Ads.txt", "destination": "/ads.txt", "permanent": true }
-  ]
 }

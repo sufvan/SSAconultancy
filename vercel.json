@@ -19,10 +19,9 @@
   ],
 
   "routes": [
-    { "src": "/api/(.*)",   "dest": "app.py" },
-    { "src": "/admin(.*)",  "dest": "app.py" },
+    { "src": "/api/(.*)",  "dest": "app.py" },
+    { "src": "/admin(.*)", "dest": "app.py" },
 
-    { "src": "/([Ff]avicon\\.ico|robots\\.txt|[Aa]ds\\.txt)", "dest": "/$1" },
     { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/assets/$1" },
 
     { "src": "/products",      "dest": "/products.html" },
@@ -33,7 +32,5 @@
     { "src": "/known-issues",  "dest": "/known-issues.html" },
     { "src": "/about",         "dest": "/about.html" },
     { "src": "/contact-us",    "dest": "/contact.html" }
-
-    // ❌ NO catch-all to app.py; static pages ko shadow na kare.
   ]
 }

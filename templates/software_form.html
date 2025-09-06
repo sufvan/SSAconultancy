@@ -1,0 +1,109 @@
+
+<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{ 'Edit' if item else 'New' }} Software</title>
+<link rel="stylesheet" href="/assets/css/styles.css"/>
+<link rel="stylesheet" href="/assets/css/admin.css"/>
+<style>
+  .imgbox{border:1px dashed rgba(2,6,23,.15); border-radius:12px; padding:10px; background:#fff}
+  .imgbox img{max-width:160px; max-height:120px; object-fit:contain; display:block}
+</style>
+</head><body class="admin-bg">
+<div class="glass"><div class="inner">
+  <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">{{ 'Edit' if item else 'New' }} Software</div></div>
+  <div class="spacer"></div>
+  <form method="post" enctype="multipart/form-data">
+    <fieldset><legend>Details</legend>
+      <div class="form-grid">
+        <div><label>Name</label><input class="input" name="name" value="{{ item.name if item else '' }}" required/></div>
+        <div><label>Category</label><input class="input" name="category" value="{{ item.category if item else '' }}" placeholder="Inventory / POS / HR / Backup"/></div>
+        <div><label>Slug</label><input class="input" name="slug" value="{{ item.slug if item else '' }}" placeholder="inventory, pos, ..."/></div>
+        <div><label>Sort Order</label><input class="input" type="number" name="sort_order" value="{{ item.sort_order if item else 0 }}"/></div>
+      </div>
+      <label>Description</label><textarea class="input" name="description" placeholder="Short description">{{ item.description if item else '' }}</textarea>
+    </fieldset>
+
+    <fieldset id="fs_pricing"><legend>Pricing</legend>
+      <div class="form-grid">
+        <div><label>One-time Software Price (PKR)</label><input class="input" type="number" name="price_one_time" value="{{ item.price_one_time if item and item.price_one_time is not none else '' }}"/></div>
+        <div><label>Yearly License (PKR)</label><input class="input" type="number" name="price_yearly" value="{{ item.price_yearly if item and item.price_yearly is not none else '' }}"/></div>
+      </div>
+    </fieldset>
+
+    <fieldset id="fs_links"><legend>Links</legend>
+      <div class="form-grid">
+        <div><label>Payment Link — One-time</label><input class="input" name="payment_link_onetime" value="{{ item.payment_link_onetime if item else '' }}" placeholder="https://buy.stripe.com/..."/></div>
+        <div><label>Payment Link — Yearly</label><input class="input" name="payment_link_yearly" value="{{ item.payment_link_yearly if item else '' }}" placeholder="https://buy.stripe.com/..."/></div>
+        <div style="grid-column:1/3"><label>Download URL</label><input class="input" name="download_url" value="{{ item.download_url if item else '' }}" placeholder="https://.../installer.exe"/></div>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Media</legend>
+      <div class="form-grid">
+        <div>
+          <label>Product Image</label>
+          <input class="input" type="file" name="image_file" id="image_file" accept=".png,.jpg,.jpeg,.webp,.svg"/>
+          <p class="small subtle">Shown on Download & Pricing cards.</p>
+        </div>
+        <div>
+          <label>Current Preview</label>
+          <div class="imgbox">
+            {% if item and item.image %}
+              <img id="img-preview" src="{{ item.image }}" alt="preview"/>
+              <label style="display:block;margin-top:8px"><input type="checkbox" name="remove_image"/> Remove image</label>
+            {% else %}
+              <img id="img-preview" src="" alt="preview" style="display:none"/>
+              <div class="small subtle">No image uploaded</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Visibility</legend>
+      <div class="form-grid">
+        <div><label>Free Download?</label><br/><label class="switch"><input type="checkbox" name="is_free" value="true" {% if item and item.is_free %}checked{% endif %}/><span class="slider"></span></label></div>
+        <div><label>Active (visible)</label><br/><label class="switch"><input type="checkbox" name="is_active" value="true" {% if not item or item.is_active %}checked{% endif %}/><span class="slider"></span></label></div>
+      </div>
+    </fieldset>
+
+    <div class="savebar"><a class="btn btn-outline" href="/admin/software">Cancel</a><button class="btn" type="submit">Save Changes</button></div>
+  </form>
+</div></div>
+
+<script src="/assets/js/admin.js"></script>
+<script>
+  // live preview
+  (function(){
+    const input = document.getElementById('image_file');
+    const img = document.getElementById('img-preview');
+    if(!input || !img) return;
+    input.addEventListener('change', function(){
+      const f = this.files && this.files[0];
+      if(!f) return;
+      const reader = new FileReader();
+      reader.onload = e => { img.src = e.target.result; img.style.display='block'; };
+      reader.readAsDataURL(f);
+    });
+  })();
+</script>
+
+<script>
+  function toggleFreeFields() {
+    const chk = document.querySelector('input[name="is_free"]');
+    const fsPricing = document.getElementById('fs_pricing');
+    const fsLinks = document.getElementById('fs_links');
+    const priceInputs = fsPricing ? fsPricing.querySelectorAll('input[type="number"], input[name="price_one_time"], input[name="price_yearly"]') : [];
+    const linkInputs  = fsLinks ? fsLinks.querySelectorAll('input[type="text"]') : [];
+    const on = !!(chk && chk.checked);
+    if (fsPricing) fsPricing.style.display = on ? 'none' : '';
+    // Links remain visible but optional; if you want to hide also, uncomment:
+    // if (fsLinks) fsLinks.style.display = on ? 'none' : '';
+    priceInputs.forEach(i => { i.disabled = on; i.value = on ? '' : i.value; });
+  }
+  document.addEventListener('DOMContentLoaded', toggleFreeFields);
+  document.addEventListener('change', (e)=>{
+    if (e.target && e.target.name === 'is_free') toggleFreeFields();
+  });
+</script>
+
+</body></html>

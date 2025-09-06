@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ 'Edit' if item else 'New' }} Issue • Admin</title>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <link rel="stylesheet" href="/assets/css/admin.css"/>
+</head>
+<body class="admin-bg">
+  <div class="glass"><div class="inner">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+      <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">{{ 'Edit' if item else 'New' }} Issue</div></div>
+      <div class="admin-nav"><a class="btn btn-soft" href="/admin/software">Software</a> <a class="btn btn-outline" href="/admin/releases">Release Notes</a> <a class="btn btn-soft" href="/admin/clients">Clients</a> <a class="btn btn-outline" href="/admin/issues">Known Issues</a> <a class="btn btn-outline" href="/admin/logout">Logout</a></div>
+    </div>
+
+    <div class="panel">
+      <form method="post">
+        <div class="grid2">
+          <div class="form-field">
+            <label>Title</label>
+            <input name="title" value="{{ item.title if item else '' }}" required/>
+          </div>
+          <div class="form-field">
+            <label>Status</label>
+            <select name="status">
+              {% for s in ['Open','In Progress','Fixed'] %}
+                <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="form-field">
+            <label>Sort Order</label>
+            <input type="number" name="sort_order" value="{{ item.sort_order if item else 0 }}"/>
+          </div>
+          <div class="form-field">
+            <label>Active?</label>
+            <select name="is_active">
+              <option value="1" {% if not item or item.is_active %}selected{% endif %}>Yes</option>
+              <option value="0" {% if item and not item.is_active %}selected{% endif %}>No</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Details</label>
+          <textarea name="content" rows="8">{{ item.content if item else '' }}</textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn">Save</button>
+          {% if item %}
+          <a class="btn ghost" href="/admin/issues/{{item.id}}/edit">Reset</a>
+          {% endif %}
+          <a class="btn ghost" href="/admin/issues">Back</a>
+        </div>
+      </form>
+    </div>
+  </div></div>
+</body>
+</html>

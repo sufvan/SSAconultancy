@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Clients • Admin</title>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <link rel="stylesheet" href="/assets/css/admin.css"/>
+</head>
+<body class="admin-bg">
+<div class="glass"><div class="inner">
+  <div style="display:flex; justify-content:space-between; align-items:center">
+    <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">Clients</div></div>
+    <div class="toolbar"><a class="btn" href="/admin/clients/new">+ New Client</a> <a class="btn btn-soft" href="/admin/software">Software</a> <a class="btn btn-outline" href="/admin/releases">Release Notes</a> <a class="btn btn-outline" href="/admin/issues">Known Issues</a> <a class="btn btn-outline" href="/admin/logout">Logout</a></div>
+  </div>
+  <div class="spacer"></div>
+
+  <table class="table">
+    <thead><tr>
+      <th>ID</th><th>Image</th><th>Name</th><th>Industry</th><th>City</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+      {% for x in items %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{% if x.image %}<img src="{{ x.image }}" style="height:48px; border-radius:8px; border:1px solid rgba(2,6,23,.08)"/>{% endif %}</td>
+        <td><strong>{{ x.name }}</strong></td>
+        <td>{{ x.industry or '' }}</td>
+        <td>{{ x.city or '' }}</td>
+        <td>{% if x.is_active %}<span class="badge-chip badge-success">Active</span>{% else %}<span class="badge-chip">Hidden</span>{% endif %}</td>
+        <td>
+          <a class="btn btn-outline" href="/admin/clients/{{ x.id }}/edit">Edit</a>
+          <form method="post" action="/admin/clients/{{ x.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this client?')">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="muted small">Changes reflect immediately on the Clients page.</div>
+</div></div>
+</body></html>

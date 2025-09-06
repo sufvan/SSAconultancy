@@ -1,0 +1,55 @@
+<!doctype html><html><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{ 'Edit' if item else 'New' }} Client</title>
+<link rel="stylesheet" href="/assets/css/styles.css"/>
+<link rel="stylesheet" href="/assets/css/admin.css"/>
+<style>
+  .imgbox{border:1px dashed rgba(2,6,23,.15); border-radius:12px; padding:10px; background:#fff}
+  .imgbox img{max-width:200px; max-height:140px; object-fit:contain; display:block}
+</style>
+</head><body class="admin-bg">
+<div class="glass"><div class="inner">
+  <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">{{ 'Edit' if item else 'New' }} Client</div></div>
+  <div class="spacer"></div>
+  <form method="post" enctype="multipart/form-data">
+    <fieldset><legend>Details</legend>
+      <div class="form-grid">
+        <div><label>Name</label><input class="input" name="name" value="{{ item.name if item else '' }}" required/></div>
+        <div><label>Industry</label><input class="input" name="industry" value="{{ item.industry if item else '' }}" placeholder="Retail, IT Services"/></div>
+        <div><label>City</label><input class="input" name="city" value="{{ item.city if item else '' }}" placeholder="Faisalabad"/></div>
+        <div><label>Website</label><input class="input" name="website" value="{{ item.website if item else '' }}" placeholder="https://example.com"/></div>
+        <div><label>Sort Order</label><input class="input" type="number" name="sort_order" value="{{ item.sort_order if item else 0 }}"/></div>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Media</legend>
+      <div class="form-grid">
+        <div>
+          <label>Client Logo</label>
+          <input class="input" type="file" name="image"/>
+          <div class="small muted">Displayed on Our Clients page.</div>
+        </div>
+        <div class="imgbox">
+          <div>Current Preview</div>
+          {% if item and item.image %}<img src="{{ item.image }}" alt="preview"/>{% else %}<div class="small muted">No image uploaded</div>{% endif %}
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Visibility</legend>
+      <div class="form-grid">
+        <div>
+          <label style="display:flex; align-items:center; gap:10px">
+            <input type="checkbox" name="is_active" {% if item and item.is_active %}checked{% elif not item %}checked{% endif %}/> Active (visible)
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <div style="display:flex; gap:10px; justify-content:flex-end">
+      <a class="btn btn-outline" href="/admin/clients">Cancel</a>
+      <button class="btn" type="submit">Save Changes</button>
+    </div>
+  </form>
+</div></div>
+</body></html>

@@ -1,0 +1,48 @@
+
+<!doctype html><html><head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ 'Edit' if item else 'New' }} Release • Admin</title>
+  <link rel="stylesheet" href="/assets/css/styles.css"/><link rel="stylesheet" href="/assets/css/admin.css"/>
+</head>
+<body class="admin-bg">
+  <div class="glass"><div class="inner">
+    <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">{{ 'Edit' if item else 'New' }} Release</div></div>
+    <div class="spacer"></div>
+    <form method="post">
+      <fieldset><legend>Details</legend>
+        <div class="form-grid">
+          <div><label>Title</label><input class="input" name="title" value="{{ item.title if item else '' }}" required/></div>
+          <div><label>Version</label><input class="input" name="version" value="{{ item.version if item else '' }}" placeholder="v1.2.3"/></div>
+          <div>
+            <label>Software (optional)</label>
+            <select class="input" name="software_id">
+              <option value="">— None —</option>
+              {% for s in software_items %}
+                <option value="{{ s.id }}" {% if item and item.software_id==s.id %}selected{% endif %}>{{ s.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label>Release Date</label>
+            <input class="input" name="release_date" type="datetime-local" value="{{ item.release_date.strftime('%Y-%m-%dT%H:%M') if item and item.release_date else '' }}"/>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset><legend>Changelog</legend>
+        <textarea class="input" name="content" placeholder="- Fixed bugs
+- Added feature A
+- Improved performance">{{ item.content if item else '' }}</textarea>
+      </fieldset>
+      <fieldset><legend>Visibility</legend>
+        <label class="switch">
+          <input type="checkbox" name="is_published" value="true" {% if not item or item.is_published %}checked{% endif %}/>
+          <span class="slider"></span>
+        </label> <span class="subtle">Published</span>
+      </fieldset>
+      <div class="savebar">
+        <a class="btn btn-outline" href="/admin/releases">Cancel</a>
+        <button class="btn" type="submit">Save Changes</button>
+      </div>
+    </form>
+  </div></div>
+</body></html>

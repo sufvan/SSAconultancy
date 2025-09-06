@@ -1,0 +1,125 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Software Catalog • Admin</title>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <link rel="stylesheet" href="/assets/css/admin.css"/>
+</head>
+<body class="admin-bg">
+  <div class="glass">
+    <div class="inner">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div class="brand-row"><img src="/assets/img/logo.png"/><div class="ttl">Software Catalog</div></div>
+        <div class="toolbar">
+  <input id="search" class="search" placeholder="Search…"/>
+  <a class="btn" href="/admin/software/new">+ Add Software</a>
+  <a class="btn btn-outline" href="/admin/releases">Release Notes</a>
+  <a class="btn btn-soft" href="/admin/clients">Clients</a>
+  <a class="btn btn-outline" href="/admin/issues">Known Issues</a>
+  <a class="btn btn-outline" href="/admin/logout">Logout</a>
+</div>
+      </div>
+
+      <div class="spacer"></div>
+      <table class="table admin-table">
+        <thead>
+          <tr><th>ID</th><th>Image</th><th>Name</th><th>Category</th><th>One-time</th><th>Yearly</th><th>Status</th><th>Free</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for x in items %}
+          <tr data-row>
+            <td>{{ x.id }}</td>
+            <td>{% if x.image %}<img src="{{ x.image }}" style="height:40px; border-radius:8px; border:1px solid rgba(2,6,23,.08)"/>{% endif %}</td>
+            <td><strong>{{ x.name }}</strong></td>
+            <td>{{ x.category or '' }}</td>
+            <td>{{ x.price_one_time or '—' }}</td>
+            <td>{{ x.price_yearly or '—' }}</td>
+            <td>
+              {% if x.is_active %}<span class="badge-chip badge-active">Active</span>{% else %}<span class="badge-chip">Hidden</span>{% endif %}
+            </td>
+            <td>{% if x.is_free %}<span class="badge-chip badge-free">FREE</span>{% else %}<span class="badge-chip">Paid</span>{% endif %}</td>
+            <td>
+              <a class="btn btn-outline" href="/admin/software/{{ x.id }}/edit">Edit</a>
+              <form method="post" action="/admin/software/{{ x.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this item?')">
+                <button class="btn" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="spacer"></div>
+      <div class="subtle small">Changes reflect immediately on the public site (Download & Pricing).</div>
+    </div>
+  </div>
+  <script src="/assets/js/admin.js"></script>
+
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+<aside class="drawer" id="drawer-release" aria-hidden="true">
+  <div class="head">
+    <div class="title">New Release</div>
+    <button class="btn btn-outline" id="drawer-close">Close</button>
+  </div>
+  <div class="body">
+    <form method="post" action="/admin/releases/quick">
+      <input type="hidden" name="software_id" id="r_software_id"/>
+      <fieldset>
+        <legend>Software</legend>
+        <div class="pill" style="display:inline-flex;align-items:center;gap:8px">
+          <span class="badge-soft blue" id="r_soft_name">—</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Details</legend>
+        <label>Title</label>
+        <input class="input" name="title" id="r_title" placeholder="Bug fixes & improvements" required/>
+        <div class="form-grid">
+          <div><label>Version</label><input class="input" name="version" id="r_version" placeholder="v1.2.3"/></div>
+          <div><label>Release Date</label><input class="input" type="datetime-local" name="release_date" id="r_date"/></div>
+        </div>
+        <label>Update Text</label>
+        <textarea class="input" name="content" id="r_content" placeholder="- Fixed crash
+- New report added"></textarea>
+        <label class="switch" style="margin-top:10px"><input type="checkbox" name="is_published" checked/><span class="slider"></span></label>
+        <span class="subtle">Published</span>
+      </fieldset>
+      <div class="foot"><button class="btn btn-outline" type="button" id="drawer-cancel">Cancel</button><button class="btn" type="submit">Save Release</button></div>
+    </form>
+  </div>
+</aside>
+
+
+<script>
+function pad(n){return n<10?'0'+n:n}
+function nowLocal(){
+  const d=new Date(); 
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+const drawer = document.getElementById('drawer-release');
+const backdrop = document.getElementById('drawer-backdrop');
+function openReleaseDrawer(id, name){
+  document.getElementById('r_software_id').value = id;
+  document.getElementById('r_soft_name').textContent = name;
+  document.getElementById('r_title').value='';
+  document.getElementById('r_version').value='';
+  document.getElementById('r_date').value = nowLocal();
+  document.getElementById('r_content').value='';
+  drawer.classList.add('open'); backdrop.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+}
+function closeReleaseDrawer(){
+  drawer.classList.remove('open'); backdrop.classList.remove('show');
+  drawer.setAttribute('aria-hidden','true');
+}
+document.querySelectorAll('[data-relbtn]').forEach(btn=>{
+  btn.addEventListener('click',()=>openReleaseDrawer(btn.dataset.id, btn.dataset.name));
+});
+document.getElementById('drawer-close').addEventListener('click', closeReleaseDrawer);
+document.getElementById('drawer-cancel').addEventListener('click', closeReleaseDrawer);
+backdrop.addEventListener('click', closeReleaseDrawer);
+</script>
+
+</body></html>

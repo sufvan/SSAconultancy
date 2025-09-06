@@ -26,6 +26,5 @@
     { "src": "/contact-us",    "dest": "/contact.html" },
 
     { "src": "/(.*)", "dest": "app.py" }
-  ],
-
+  ]
 }

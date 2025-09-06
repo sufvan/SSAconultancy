@@ -11,11 +11,16 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, Da
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # --- Paths & Config ---
-BASE_DIR = Path(__file__).parent
-SITE_DIR = BASE_DIR
+# --- Paths & Config (UPDATED for /api/) ---
+from pathlib import Path
+import os, re, datetime, shutil
 
-SEED_DB = SITE_DIR / "assets" / "data" / "app.db"     # optional seed
-RUNTIME_DB = Path("/tmp/app.db")                      # writable on Vercel
+API_DIR  = Path(__file__).resolve().parent      # /api
+ROOT_DIR = API_DIR.parent                       # repo root
+SITE_DIR = ROOT_DIR
+
+SEED_DB     = ROOT_DIR / "assets" / "data" / "app.db"
+RUNTIME_DB  = Path("/tmp/app.db")
 
 use_runtime = os.access("/tmp", os.W_OK)
 if use_runtime:
@@ -24,7 +29,7 @@ if use_runtime:
         shutil.copyfile(SEED_DB, RUNTIME_DB)
     DB_PATH = RUNTIME_DB
 else:
-    DB_DIR = SITE_DIR / "assets" / "data"
+    DB_DIR = ROOT_DIR / "assets" / "data"
     DB_DIR.mkdir(parents=True, exist_ok=True)
     DB_PATH = DB_DIR / "app.db"
 
@@ -33,9 +38,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
-app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+from fastapi.templating import Jinja2Templates
+templates = Jinja2Templates(directory=str(ROOT_DIR / "templates"))
+
 
 engine = create_engine(f"sqlite:///{DB_PATH}", connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)

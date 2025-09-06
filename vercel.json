@@ -3,22 +3,14 @@
   "cleanUrls": true,
   "trailingSlash": false,
 
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "includeFiles": ["templates/**", "assets/data/**"]
-      }
-    },
-    { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "*.html", "use": "@vercel/static" }
-  ],
+  "functions": {
+    "api/app.py": {
+      "includeFiles": ["templates/**", "assets/data/**"]
+    }
+  },
 
   "routes": [
-    { "src": "/api/(.*)",  "dest": "app.py" },
-    { "src": "/admin(.*)", "dest": "app.py" },
-    { "src": "/(favicon\\.ico|robots\\.txt|ads\\.txt)", "dest": "/$1" },
+    { "src": "/admin(.*)", "dest": "/api/app.py" },
     { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" }, "dest": "/assets/$1" }
   ]
 }

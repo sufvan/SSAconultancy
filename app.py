@@ -1,5 +1,7 @@
 
 import os, re, datetime
+from pathlib import Path
+
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, UploadFile, File
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -9,28 +11,32 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, Da
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # --- Paths & Config ---
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = Path(__file__).parent
 
-def _resolve_site_dir():
+def _resolve_site_dir() -> Path:
     env = os.environ.get("SITE_DIR")
-    if env and os.path.isdir(env):
-        return env
-    candidates = [
-        os.path.abspath(os.path.join(BASE_DIR, "..", "SSAconultancy")),
-        os.path.abspath(os.path.join(BASE_DIR, "..", "SSAconultancy")),
-    ]
-    for p in candidates:
-        if os.path.isdir(p):
-            return p
-    return candidates[0]
+    if env and Path(env).is_dir():
+        return Path(env)
+    # site/ folder preference
+    if (BASE_DIR / "site").is_dir():
+        return BASE_DIR / "site"
+    return BASE_DIR  # fallback
 
 SITE_DIR = _resolve_site_dir()
-DB_PATH = os.path.join(BASE_DIR, "assets/data", "app.db")
+
+# DB/Uploads dirs — ensure they exist
+DB_DIR = SITE_DIR / "assets" / "data"
+DB_DIR.mkdir(parents=True, exist_ok=True)
+UPLOAD_DIR = SITE_DIR / "assets" / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+DB_PATH = DB_DIR / "app.db"
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
-
+print("== SITE_DIR:", SITE_DIR)
+print("== DB_PATH :", DB_PATH)
 # --- App & DB ---
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)

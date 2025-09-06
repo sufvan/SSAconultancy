@@ -18,8 +18,8 @@ def _resolve_site_dir() -> Path:
     if env and Path(env).is_dir():
         return Path(env)
     # site/ folder preference
-    if (BASE_DIR / "site").is_dir():
-        return BASE_DIR / "site"
+    if (BASE_DIR / ".").is_dir():
+        return BASE_DIR / "."
     return BASE_DIR  # fallback
 
 SITE_DIR = _resolve_site_dir()
